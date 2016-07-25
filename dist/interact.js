@@ -1332,6 +1332,7 @@
                     || !testAllow(this.target, this.element, eventTarget))) {
                 // if the eventTarget should be ignored or shouldn't be allowed
                 // clear the previous target
+                this.resetDocumentCursor();
                 this.target = null;
                 this.element = null;
                 this.matches = [];
@@ -1388,6 +1389,7 @@
                                             listeners.pointerHover);
                     }
                     else {
+                        this.resetDocumentCursor();
                         this.target = null;
                         this.element = null;
                         this.matches = [];
@@ -1441,7 +1443,7 @@
             }
 
             if (this.target && this.target.options.styleCursor && !this.interacting()) {
-                this.target._doc.documentElement.style.cursor = '';
+                this.resetDocumentCursor();
             }
         },
 
@@ -2624,7 +2626,14 @@
             return this.dragging || this.resizing || this.gesturing;
         },
 
+        resetDocumentCursor: function () {
+            if (this.target) {
+                this.target._doc.documentElement.style.cursor = '';
+            }
+        },
+
         clearTargets: function () {
+            this.resetDocumentCursor();
             this.target = this.element = null;
 
             this.dropTarget = this.dropElement = this.prevDropTarget = this.prevDropElement = null;
